@@ -24,7 +24,9 @@
     "require": {
         "craftcms/cms": "^3.0.0-RC1",
         "sabre/xml": "2.1.0",
-        "cron/cron" : "1.2.4"
+        "cron/cron" : "1.2.4",
+        "cakephp/core": "^3.5",
+        "cakephp/utility": "^3.3.12",
     },
     "autoload": {
         "psr-4": {
