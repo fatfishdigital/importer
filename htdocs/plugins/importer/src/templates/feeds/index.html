@@ -1,0 +1,75 @@
+{% extends "importer/_layouts" %}
+{% import "_includes/forms" as forms %}
+
+{% set selectedTab='feeds' %}
+
+
+
+
+{% block blockContent %}
+
+
+<div id="castelFord">
+
+    <div class="content">
+
+    {% for feed in feeds %}
+         <h2>{{ feed['name'] }}</h2>
+        <form method="post" action="{{ siteUrl }}admin/actions/importer/feed/savefeedmapping">
+            {{ csrfInput() }}
+            <input type="hidden" name="feedid" id="feedid" value="{{feed['feedid']}}" />
+            <input type="hidden" name="type" id="type" value="{{feed['type']}}" />
+            <table class="data fullwidth collapsible">
+                <thead>
+                <tr>
+                    <th>Entries Fields</th>
+                    <th>Mapping Fields</th>
+                    <th>Critearea</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for fieldentries in feed['entries_field'] %}
+                <tr>
+                    <td>
+                        <select id="entryfield" name="entryfield[]">
+                            <option value="{{ fieldentries.id }}">{{ fieldentries.handle }}</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="mappedfield" name="mappedfield[]">
+                            {% for xmlkey in feed['xml'] %}
+
+
+                            <option value="{{ xmlkey }}">{{ xmlkey }}</option>
+
+
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <input type="radio" class="" name="radio[]" value="checked"/>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="buttons">
+                <input class="btn submit" type="submit" value="{{ "Save Configuration"|t('importer') }}"/>
+                <a href="{{ siteUrl }}admin/actions/importer/contentimporter/import" class="btn submit" id="runImport">{{ "Run Importer"|t('importer') }}</a>
+            </div>
+        </form>
+        <br><br>
+
+
+    {% endfor %}
+    </div>
+</div>
+</div>
+{% endblock %}
+
+
+
+
+{% set content %}
+{%endset%}

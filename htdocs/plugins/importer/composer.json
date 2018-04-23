@@ -1,0 +1,42 @@
+{
+    "name": "fatfish/importer",
+    "description": "content importer",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "importer"
+    ],
+    "support": {
+        "docs": "https://github.com/github.com/fatfish/importer/blob/master/README.md",
+        "issues": "https://github.com/github.com/fatfish/importer/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fatfish",
+            "homepage": "https://Fatfish.com.au"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1",
+        "sabre/xml": "2.1.0",
+        "cron/cron" : "1.2.4"
+    },
+    "autoload": {
+        "psr-4": {
+          "fatfish\\importer\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "importer",
+        "handle": "importer",
+        "hasCpSettings": true,
+        "hasCpSection": true,
+        "changelogUrl": "https://raw.githubusercontent.com/github.com/fatfish/importer/master/CHANGELOG.md",
+        "class": "fatfish\\importer\\Importer"
+    }
+}

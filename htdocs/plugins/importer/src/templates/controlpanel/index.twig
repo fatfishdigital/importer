@@ -1,0 +1,102 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * importer plugin for Craft CMS 3.x
+ *
+ * importer index.html
+ *
+ * @author    Fatfish
+ * @copyright Copyright (c) 2018 Fatfish
+ * @link      Fatfish.com.au
+ * @package   Importer
+ * @since     1.0.0
+ */
+#}
+
+{% extends "importer/_layouts" %}
+
+{% import "_includes/forms" as forms %}
+{% set selectedTab = 'castleford' %}
+{% do view.registerAssetBundle("fatfish\\importer\\assetbundles\\importer\\ImporterAsset") %}
+{% do view.registerAssetBundle("fatfish\\importer\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
+{# Link for the ? icon at the bottom of the page #}
+{% set docsUrl = "https://github.com/github.com/fatfish/importer/blob/master/README.md" %}
+
+{# The title of this CP section #}
+{% set title = "importer" %}
+
+{# The URL to this plugin's base CP section #}
+{% set pluginCpUrl = url('importer') %}
+
+{# Get a URL to an image in our AssetBundle #}
+{% set iconUrl = view.getAssetManager().getPublishedUrl('@fatfish/importer/assetbundles/indexcpsection/dist', true) ~ '/img/Index-icon.svg' %}
+
+{# Content that should appear in the page header#}
+{% set extraPageHeaderHtml %}
+    <div class="buttons">
+        <a href="{{ pluginCpUrl }}" class="btn submit add icon">{{ "Click Me!"|t('importer') }}</a>
+    </div>
+{% endset %}
+
+
+
+{% block blockContent %}
+
+<div id="castelFord">
+    <h2>{{ "CastelFord Api"|t('importer') }}</h2>
+    <div class="content">
+        <form method="post" action="{{ siteUrl }}/admin/actions/importer/contentimporter/save">
+            {{ csrfInput() }}
+            <table class="data fullwidth collapsible">
+                <thead>
+                <tr>
+                    <th>Entries Fields</th>
+                    <th>Mapping Fields</th>
+                    <th>Critearea</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for field in fields %}
+                    <tr>
+                        <td>
+                            <select id="entryfield" name="entryfield[]">
+                                <option value="{{ field.id }}">{{ field.handle }}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="mappedfield" name="mappedfield[]">
+                                {% for field in apifield %}
+
+
+                                    <option value="{{ field }}">{{ field }}</option>
+
+
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="radio" class="" name="radio[]" value="checked"/>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="buttons">
+                <input class="btn submit" type="submit" value="{{ "Save Configuration"|t('importer') }}"/>
+                <a href="{{ siteUrl }}admin/actions/importer/contentimporter/import" class="btn submit" id="runImport">{{ "Run Importer"|t('importer') }}</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+</div>
+
+{% endblock %}
+
+{# The content of the CP Section#}
+{% set content %}
+
+
+{% endset %}
