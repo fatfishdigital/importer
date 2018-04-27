@@ -10,6 +10,7 @@ namespace fatfish\importer\controllers;
 use Craft;
 use craft\feeds\GuzzleClient;
 use GuzzleHttp\Client;
+use Cake\Utility\Xml;
 
 class XmlPraser
 {
@@ -23,15 +24,52 @@ class XmlPraser
         $this->feedurl = $FeedModel->feedurl;
         $client = new Client();
         $request = $client->request('GET',$this->feedurl);
-        $this->response  = $request->getBody();
+         $this->response  = $request->getBody();
+
 
     }
     public function parse_xml()
     {
 
 
-         $this->xml= array_keys((array)new \SimpleXMLElement($this->response));
-        return $this->xml;
+    	$xml = new \SimpleXMLElement($this->response);
+	    $proper_xml_form = $xml->asXML();
+	    $xmlIterator = new \SimpleXMLIterator($proper_xml_form);
+	    var_dump(array_keys((array)$xmlIterator));die;
+
+	      foreach($xmlIterator->children() as $child)
+	     {
+
+			if($child->children())
+			{
+
+				foreach ($child->children() as $secondchild)
+				{
+
+					return (array_keys((array)$secondchild));
+					break;
+				}
+
+			}
+			else
+			{
+
+
+				return array_keys((array)$child);
+			}
+
+	    }
+			die;
+
+    }
+    public function get_primary_node_element()
+    {
+
+
+
+
+
+
 
     }
 

@@ -7,7 +7,8 @@
     */
     //TODO
     /*
-    * we need to optimize database creation and deletion process.
+    * nothing here. database is optimized
+     *
     */
     namespace fatfish\importer\migrations;
     use Craft;
@@ -18,15 +19,17 @@
 
     public $driver;
 
+
     public function safeUp()
     {
-
+		echo "Migration Running on";
         $this->driver = Craft::$app->getConfig()->getDb()->driver;
         $this->createTables();
         $this->createFeedTables();
         $this->createFeedMapping();
         return true;
     }
+
 
 
         public function safeDown()
@@ -65,6 +68,7 @@
                'feedurl'=>$this->string(),
                'feedtype'=>$this->string(),
                'entry_type'=>$this->integer(),
+               'primary_element'=>$this->string(),
                'uid'=>$this->uid(),
                'dateCreated'=>$this->dateTime(),
                'dateUpdated'=>$this->dateTime(),
@@ -111,4 +115,5 @@
 
 
         }
+
     }

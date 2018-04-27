@@ -14,6 +14,7 @@ use craft\web\Controller;
 use fatfish\importer\services;
 use fatfish\importer\services\EntrycategoriesService as Service;
 use fatfish\importer\models\FeedModel;
+use craft\web\Request;
 
 
 /**
@@ -253,7 +254,7 @@ class ContentimporterController extends Controller
 
      public function actionFeeds()
      {
-        $feedcategory = new FeedController(null,null); // dont know why this constructor expects two parameter as if you see the base controller there is no contructor
+        $feedcategory = new FeedController(null,null); // dont know why this constructor expects two parameter ,if you see the base controller there is no contructor
         $feeds = $feedcategory->get_feed_type();
        return $this->renderTemplate('importer/feeds',['feeds'=>$feeds]);
      }
@@ -265,7 +266,7 @@ class ContentimporterController extends Controller
      }
      public function actionNewfeed()
      {
-         $feedmodel = new FeedModel();
+          $feedmodel = new FeedModel();
          $feedService = new services\FeedService();
          $AllFeedData = $feedService->get_all_feeds();
          return $this->renderTemplate('importer/addfeed',['feed'=>$feedmodel,'Feeds'=>$AllFeedData]);
@@ -299,6 +300,17 @@ class ContentimporterController extends Controller
              return $this->renderTemplate('importer/addfeed',['feed'=>$feedmodel,'Feeds'=>$AllFeedData]);
 
          }
+
+     }
+     public function actionFetchapi()
+     {
+			$feedController = new FeedController(null,null);
+		if(Craft::$app->request->isAjax)
+		{
+			$ajax_post_data = Craft::$app->request->post('url');
+			$data=$feedController->get_xml_node($ajax_post_data);
+			return json_encode($data);
+		}
 
      }
 }

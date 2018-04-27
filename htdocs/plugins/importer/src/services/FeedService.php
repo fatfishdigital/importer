@@ -11,7 +11,7 @@ use fatfish\importer\models\FeedModel;
 use fatfish\importer\records\FeedRecord;
 use Craft;
 use craft\base\Component;
-use function GuzzleHttp\Promise\all;
+use  GuzzleHttp\Client;
 
 class FeedService extends Component
 {
@@ -131,4 +131,17 @@ class FeedService extends Component
 
 
     }
+    public function xml_api_element_fetched($url)
+    {
+
+	    $client = new Client();
+	    $request = $client->request('GET',$url);
+	    $response  = $request->getBody();
+	    $xml = new \SimpleXMLElement($response);
+	    $proper_xml_form = $xml->asXML();
+	    $xmlIterator = new \SimpleXMLIterator($proper_xml_form);
+	    return (array_keys((array)$xmlIterator));
+
+    }
+
 }

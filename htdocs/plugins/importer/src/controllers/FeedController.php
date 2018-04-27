@@ -179,6 +179,19 @@ class FeedController extends Controller
 				$FeedMapppingService->save_feed_mapping($FeedMappingModel);
 	        }
 
-die;
+        }
+        public function get_xml_node($url)
+        {
+			$feedService = new FeedService();
+			$Data= [];
+        	$result=($feedService->xml_api_element_fetched($url));
+        	foreach ($result as $result)
+	        {
+				$Data[$result] = $result;
+	        }
+		return $Data;
+
+
+
         }
 }

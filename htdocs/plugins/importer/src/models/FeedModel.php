@@ -27,6 +27,7 @@ class FeedModel extends Model
     ];
     public $Entrytype;
     public $dateUpdated;
+    public $primary_element;
 
     public function rules()
     {
@@ -36,6 +37,7 @@ class FeedModel extends Model
             ['feedurl', 'string'],
             ['feedtype'],
             ['entrytype','string'],
+	        ['primary_element','string'],
             ['dateCreated', 'datetime'],
             ['dateUpdated','datetime'],
             ['uid','integer']

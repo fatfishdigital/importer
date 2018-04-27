@@ -55,7 +55,18 @@ errors: feed.getErrors('feedtype'),
 required: true,
 }) }}
 
-<div class="buttons">
+    {{ forms.selectField({
+    label: "Primary Element" | t('importer'),
+    instructions: 'Choose the the primary element, it is repeatable element that contains the data you want to import.' | t('importer'),
+    id: 'primary_element',
+    name: 'primary_element',
+    options: feed.primary_element,
+    value: feed.primary_element,
+    errors: feed.getErrors('primary_element'),
+    required: true,
+    }) }}
+
+    <div class="buttons">
     <input type="submit" class="btn submit" value="{{ 'Save' | t('importer') }}">
  </div>
 </form>
@@ -113,6 +124,29 @@ required: true,
 </table>
 {%endif %}
 {% endif %}
+{% js %}
+
+$('#feedUrl').on('change',function(){
+var dataarray = {};
+dataarray['url']=$(this).val();
+var option = '';
+Craft.postActionRequest(Craft.baseUrl+'/contentimporter/fetchapi',dataarray,function(response){
+
+jQuery.each(response,function(index,value){
+
+option += '<option value='+index+'>'+value+'</option>';
+
+});
+$('#primary_element').html(option);
+});
+
+});
+
+
+
+
+
+{% endjs %}
 {%endblock%}
 
 {% endset %}
