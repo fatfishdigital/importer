@@ -35,9 +35,7 @@ class XmlPraser
     	$xml = new \SimpleXMLElement($this->response);
 	    $proper_xml_form = $xml->asXML();
 	    $xmlIterator = new \SimpleXMLIterator($proper_xml_form);
-	    var_dump(array_keys((array)$xmlIterator));die;
-
-	      foreach($xmlIterator->children() as $child)
+	       foreach($xmlIterator->children() as $child)
 	     {
 
 			if($child->children())
@@ -59,7 +57,7 @@ class XmlPraser
 			}
 
 	    }
-			die;
+
 
     }
     public function get_primary_node_element()

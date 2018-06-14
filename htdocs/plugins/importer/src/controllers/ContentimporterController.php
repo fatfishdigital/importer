@@ -105,6 +105,7 @@ class ContentimporterController extends Controller
     {
 
         $EntryId = (int)Craft::$app->plugins->getPlugin('importer')->getSettings()->entries;
+
         if($EntryId>0) {
             $sectionHandle = Craft::$app->sections->getSectionById($EntryId)->handle;
             $sectionId = Craft::$app->sections->getSectionByHandle($sectionHandle)->getEntryTypes();
@@ -112,6 +113,7 @@ class ContentimporterController extends Controller
             $services = new services\EntrycategoriesService();
             $this->apifield = $services->fetch_api_field();
             return $this->renderTemplate('importer/controlpanel', ['fields' => $this->fieldlist, 'apifield' => $this->apifield]);
+
         }
         else
         {
@@ -254,7 +256,7 @@ class ContentimporterController extends Controller
 
      public function actionFeeds()
      {
-        $feedcategory = new FeedController(null,null); // dont know why this constructor expects two parameter ,if you see the base controller there is no contructor
+        $feedcategory = new FeedController(null,null); // dont know why this constructor expects two parameter ,if you see the base controller there is no constructor
         $feeds = $feedcategory->get_feed_type();
        return $this->renderTemplate('importer/feeds',['feeds'=>$feeds]);
      }

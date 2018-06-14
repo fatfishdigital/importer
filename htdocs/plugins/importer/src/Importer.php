@@ -60,7 +60,7 @@ class Importer extends Plugin
      *
      * @var string
      */
-    public $schemaVersion = '1.0.10';
+    public $schemaVersion = '1.0.13';
 
     // Public Methods
     // =========================================================================
