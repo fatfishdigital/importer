@@ -5,11 +5,18 @@
 castlefordFeed: { label: "CastleFordFeed" | t('importer'), url: url('contentimporter/feedsettings') },
 addfeeds: { label: "Feeds" | t('importer'), url: url('contentimporter/newfeed') },
 
-}
-%}
+} %}
 {% endif %}
-{% set title = '' %}
+
+{% if title is not defined %}
+{% set title = ' ' %}
+{% endif %}
+
 {% set content %}
+{% block blockContent %}
+
+{% endblock %}
+
 <hr>
 
 <div id="plugin-footer">
