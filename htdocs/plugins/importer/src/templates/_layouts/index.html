@@ -6,13 +6,9 @@ castleford: { label: "CastleFord" | t('importer'), url: url('importer') },
 feeds: { label: "Feeds" | t('importer'), url: url('contentimporter/feeds') },
 cron: { label: "cron" | t('importer'), url: url('contentimporter/cronview') },
 feedsettings: { label: "FeedSettings" | t('importer'), url: url('contentimporter/feedsettings') },
-} %}
+}
+%}
 {% endif %}
-
-{% if title is not defined %}
-{% set title = craft.feedme.getPluginName ~ ' ' %}
-{% endif %}
-
 {% set content %}
 {% block blockContent %}
 
@@ -34,7 +30,7 @@ feedsettings: { label: "FeedSettings" | t('importer'), url: url('contentimporter
             <div class="credit-pill">
                 <div class="credit-mask">
                     <div class="credit-wrap">
-                        <!--{% include 'feed-me/_svg/verbb-logo.svg' %}-->
+
                     </div>
                 </div>
             </div>
