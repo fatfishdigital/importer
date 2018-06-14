@@ -1,13 +1,14 @@
-{% extends "importer/_layouts/feeds.html" %}
+{% extends "importer/_layouts/index.html" %}
 {% import "_includes/forms" as forms %}
 {% set selectedTab = 'castlefordFeed' %}
 {% set content %}
+
 {% block blockContent %}
 
 {% set url =siteUrl %}
-
-
 <a href="{{url}}admin/settings/plugins/importer" class="btn submit">CastleFord</a>
 
+
 {%endblock%}
+
 {% endset %}

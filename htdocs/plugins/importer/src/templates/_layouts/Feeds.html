@@ -5,18 +5,11 @@
 castlefordFeed: { label: "CastleFordFeed" | t('importer'), url: url('contentimporter/feedsettings') },
 addfeeds: { label: "Feeds" | t('importer'), url: url('contentimporter/newfeed') },
 
-} %}
+}
+%}
 {% endif %}
-
-{% if title is not defined %}
 {% set title = '' %}
-{% endif %}
-
 {% set content %}
-{% block blockContent %}
-
-{% endblock %}
-
 <hr>
 
 <div id="plugin-footer">
@@ -33,7 +26,8 @@ addfeeds: { label: "Feeds" | t('importer'), url: url('contentimporter/newfeed') 
             <div class="credit-pill">
                 <div class="credit-mask">
                     <div class="credit-wrap">
-                          </div>
+
+                    </div>
                 </div>
             </div>
         </a>

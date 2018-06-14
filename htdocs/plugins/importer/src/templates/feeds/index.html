@@ -13,8 +13,8 @@
 
     <div class="content">
 
-    {% for feed in feeds %}
-         <h2>{{ feed['name'] }}</h2>
+        {% for feed in feeds %}
+        <h2>{{ feed['name'] }}</h2>
         <form method="post" action="{{ siteUrl }}admin/actions/importer/feed/savefeedmapping">
             {{ csrfInput() }}
             <input type="hidden" name="feedid" id="feedid" value="{{feed['feedid']}}" />
@@ -62,7 +62,7 @@
         <br><br>
 
 
-    {% endfor %}
+        {% endfor %}
     </div>
 </div>
 </div>
