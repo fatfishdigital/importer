@@ -34,11 +34,14 @@ class EntrycategoriesService extends Component
 	 */
 	public function __construct(array $config = [])
             {
-                $time = time();
+
                 $this->apiurl = Craft::$app->plugins->getPlugin('importer')->getSettings()->apiurl;
                 $this->apikey = Craft::$app->plugins->getPlugin('importer')->getSettings()->apikey;
                 $client = new Client();
                 $this->endpoint = $this->apiurl.'/'.$this->apikey.'/news'; // will construct https://api.castleford.com.au/apikey/news
+	           /*
+	            * Will throw an exception when malformed url is added in url section for castleford.
+	            */
 	            try
 	            {
 		            $request = $client->request('GET',$this->endpoint);
