@@ -1,0 +1,42 @@
+{% extends '_layouts/cp' %}
+
+{% if noTabs is not defined %}
+{% set tabs = {
+castleford: { label: "CastleFord" | t('importer'), url: url('importer') },
+feeds: { label: "Feeds" | t('importer'), url: url('contentimporter/feeds') },
+cron: { label: "cron" | t('importer'), url: url('contentimporter/cronview') },
+feedsettings: { label: "FeedSettings" | t('importer'), url: url('contentimporter/feedsettings') },
+}
+%}
+{% endif %}
+
+{% set title = 'Feed Importer' %}
+
+{% set content %}
+{% block blockContent %}
+{% endblock %}
+
+<hr>
+
+<div id="plugin-footer">
+    <div class="footer-left">
+        {% block footerButton %}
+
+        {% endblock %}
+    </div>
+
+    <div class="footer-right">
+        <a class="plugin-credit" href="https://fatfish.com.au" target="_blank" style="position: relative; left: 20px; bottom: 10px;">
+            <span class="credit-love">Made with <span style="color: #e25555;">&#9829;</span> by Fatfish</span>
+
+            <div class="credit-pill">
+                <div class="credit-mask">
+                    <div class="credit-wrap">
+
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+{% endset %}

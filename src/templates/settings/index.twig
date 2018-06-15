@@ -1,0 +1,44 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * importer plugin for Craft CMS 3.x
+ *
+ * importer Settings.twig
+ *
+ * @author    Fatfish
+ * @copyright Copyright (c) 2018 Fatfish
+ * @link      Fatfish.com.au
+ * @package   Importer
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("fatfish\\importer\\assetbundles\\importer\\ImporterAsset") %}
+
+{{ forms.textField({
+    label: 'API URL',
+    instructions: 'Enter api url here.',
+    id: 'apiurl',
+    name: 'apiurl',
+    value: feedsettings['apiurl']})
+}}
+{{ forms.textField({
+    label: 'API KEY',
+    instructions: 'Enter api key here.',
+    id: 'apikey',
+    name: 'apikey',
+    value: feedsettings['apikey']})
+}}
+{{
+    forms.selectField({
+    label: 'Type',
+    instructions: 'Select Entries type you want to import content',
+    id:'entries',
+    name:'entries',
+    options: categories
+
+
+})
+}}
