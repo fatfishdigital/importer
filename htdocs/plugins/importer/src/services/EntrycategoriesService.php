@@ -27,7 +27,12 @@ class EntrycategoriesService extends Component
     public $fields=[];
     public $allarticles=[];
     public $flag;
-            public function __construct(array $config = [])
+
+	/**
+	 * EntrycategoriesService constructor.
+	 * @param array $config
+	 */
+	public function __construct(array $config = [])
             {
                 $time = time();
                 $this->apiurl = Craft::$app->plugins->getPlugin('importer')->getSettings()->apiurl;
