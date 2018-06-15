@@ -34,15 +34,28 @@ class EntrycategoriesService extends Component
                 $this->apikey = Craft::$app->plugins->getPlugin('importer')->getSettings()->apikey;
                 $client = new Client();
                 $this->endpoint = $this->apiurl.'/'.$this->apikey.'/news'; // will construct https://api.castleford.com.au/apikey/news
-                $request = $client->request('GET',$this->endpoint);
-                $this->responsebody = new \SimpleXMLElement($request->getBody());
-                $this->response=$request->getBody();
+	            try
+	            {
+		            $request = $client->request('GET',$this->endpoint);
+		            $this->responsebody = new \SimpleXMLElement($request->getBody());
+		            $this->response=$request->getBody();
+	            }
+	            catch(\Exception $guzzle)
+	            {
+	            	return $this->response=null;
+	            }
+
+
                 parent::__construct($config);
             }
 
 
         public function fetch_api_field()
         {
+        	if(is_null($this->responsebody))
+	        {
+	        	return null;
+	        }
             $newsurl = (string)$this->responsebody->newsListItem['href'];
             $field_array = [];
             $client = new Client();
