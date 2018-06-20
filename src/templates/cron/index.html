@@ -2,6 +2,12 @@
 
 {% import "_includes/forms" as forms %}
 {% set selectedTab = 'cron' %}
-{% block blockcontent %}
-
+{% block blockContent %}
+<div class="content">
+    <label for="crontime">Select the time to set cron for importing content</label><br>
+<input type="text" id="crontime" name="crontime"/><br>
+    <div class="buttons">
+    <button class="btn success">Set Cron</button>
+    </div>
+</div>
 {% endblock %}

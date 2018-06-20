@@ -252,6 +252,7 @@ class ContentimporterController extends Controller
           $cron->setExecutor(new \Cron\Executor\Executor());
           $cron->setResolver($resolver1);
           $cron->run();
+return $this->renderTemplate('importer/cron');
      }
 
      public function actionFeeds()
