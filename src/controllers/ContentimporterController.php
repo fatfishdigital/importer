@@ -254,7 +254,7 @@ class ContentimporterController extends Controller
           echo '<pre>';
           var_dump($cron->run());
           echo '</pre>';
-
+die;
 //	  	return $this->renderTemplate('importer/cron');
      }
 
