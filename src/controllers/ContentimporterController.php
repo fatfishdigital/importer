@@ -223,7 +223,7 @@ class ContentimporterController extends Controller
              Craft::$app->log->logger->log("Data is imported at".\date("Y-m-d h:i:sa"),"0");
          }
          else {
-             Craft::$app->log->logger->log("Data is import failed at".\date("Y-m-d h:i:sa"),"0");
+             Craft::$app->log->logger->log("Data import failed at".\date("Y-m-d h:i:sa"),"0");
          }
 
 
@@ -240,7 +240,7 @@ class ContentimporterController extends Controller
       {
 
           $cronjob1 = new \Cron\Job\ShellJob();
-          $cronjob1->setCommand('php ../craft importer/cronjob/index');
+          $cronjob1->setCommand('php ../../craft importer/cronjob/index');
 
           $cronjob1->setSchedule(new \Cron\Schedule\CrontabSchedule('*/1 * * * *'));
 
@@ -251,8 +251,8 @@ class ContentimporterController extends Controller
           $cron = new \Cron\Cron();
           $cron->setExecutor(new \Cron\Executor\Executor());
           $cron->setResolver($resolver1);
-          $cron->run();
-return $this->renderTemplate('importer/cron');
+        var_dump( $cron->run());
+//	  	return $this->renderTemplate('importer/cron');
      }
 
      public function actionFeeds()
