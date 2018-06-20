@@ -240,7 +240,8 @@ class ContentimporterController extends Controller
       {
 
           $cronjob1 = new \Cron\Job\ShellJob();
-          $cronjob1->setCommand('php ../../craft importer/cronjob/index');
+//          $cronjob1->setCommand('php ../../craft importer/cronjob/index');
+	      $cronjob1->setCommand('mkdir test');
 
           $cronjob1->setSchedule(new \Cron\Schedule\CrontabSchedule('*/5 * * * *'));
 
