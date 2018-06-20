@@ -242,7 +242,7 @@ class ContentimporterController extends Controller
           $cronjob1 = new \Cron\Job\ShellJob();
           $cronjob1->setCommand('php ../../craft importer/cronjob/index');
 
-          $cronjob1->setSchedule(new \Cron\Schedule\CrontabSchedule('*/1 * * * *'));
+          $cronjob1->setSchedule(new \Cron\Schedule\CrontabSchedule('*/5 * * * *'));
 
           $resolver1 = new \Cron\Resolver\ArrayResolver();
           $resolver1->addJob($cronjob1);
@@ -251,9 +251,8 @@ class ContentimporterController extends Controller
           $cron = new \Cron\Cron();
           $cron->setExecutor(new \Cron\Executor\Executor());
           $cron->setResolver($resolver1);
-       echo '<pre>';
-        var_dump( $cron->run());
-        echo '</pre>';
+      $cron->run();
+
 //	  	return $this->renderTemplate('importer/cron');
      }
 
