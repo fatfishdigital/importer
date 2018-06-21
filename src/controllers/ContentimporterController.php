@@ -17,6 +17,7 @@ use fatfish\importer\models\FeedModel;
 use craft\web\Request;
 
 
+
 /**
  * Contentimporter Controller
  *
@@ -236,12 +237,15 @@ class ContentimporterController extends Controller
 
       }
 
-      public function actionSetcron()
+	/**
+	 * @return Schedule
+	 */
+	public function actionSetcron()
       {
 
           $cronjob1 = new \Cron\Job\ShellJob();
-//          $cronjob1->setCommand('php ../../craft importer/cronjob/index');
-	      $cronjob1->setCommand('mkdir test');
+          $cronjob1->setCommand('usr/bin/php ../craft importer/cronjob/index');
+//	      $cronjob1->setCommand('/usr/bin/php test.php');
 
           $cronjob1->setSchedule(new \Cron\Schedule\CrontabSchedule('*/5 * * * *'));
 
@@ -255,9 +259,10 @@ class ContentimporterController extends Controller
           echo '<pre>';
           var_dump($cron->run());
           echo '</pre>';
-die;
-//	  	return $this->renderTemplate('importer/cron');
-     }
+
+
+
+      }
 
      public function actionFeeds()
      {
