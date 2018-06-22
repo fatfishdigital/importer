@@ -3,15 +3,72 @@
 {% import "_includes/forms" as forms %}
 {% set selectedTab = 'cron' %}
 {% block blockContent %}
-<div class="content">
-    <label for="crontime">Select the time to set cron for importing content</label><br>
-    <form method="post" action="setcron">
-        {{csrfInput()}}
-<input type="text" id="crontime" name="crontime" placeholder="hour:month/day/month/week" required/><br>
-    <div class="buttons">
-    <input type="submit" class="btn btn-success">
 
-    </div>
-    </form>
-</div>
+<form method="post" action="setcron">
+    {{csrfInput()}}
+
+            <div class="field first" id="name-field">
+                <div class="heading">
+                    <label id="name-label" for="hour">Hour</label>
+                </div>
+                <div class="input ltr">
+                    <input class="text smalltext" type="text" id="hour" name="hour" placeholder="Hour" >
+                </div>
+            </div>
+
+            <div class="field first" id="Minutes-field">
+                <div class="heading">
+                    <label id="label2070813244" for="minutes">Minutes</label>
+                </div>
+                <div class="input ltr">
+
+                    <input type="text" class="text smalltext" id="minutes" name="minutes" placeholder="Minutes"></div>
+
+                </div>
+
+                <div class="field first" id="Day-field">
+                <div class="heading">
+                    <label id="label2070813244" for="Day">Day</label>
+                </div>
+                <div class="input ltr">
+
+                    <input type="text" class="text smalltext" id="Day" name="Day" placeholder="Day"></div>
+
+            </div>
+
+            <div class="field first" id="Month-field">
+                <div class="heading">
+                    <label id="label2070813244" for="minutes">Month</label>
+                </div>
+                <div class="input ltr">
+
+                    <input type="text" class="text smalltext" id="Month" name="Month" placeholder="Month"></div>
+
+            </div>
+
+            <div class="field first" id="Week-field">
+                <div class="heading">
+                    <label id="label2070813244" for="minutes">Week</label>
+                </div>
+                <div class="input ltr">
+
+                    <input type="text" class="text smalltext" id="Week" name="Week" placeholder="Week"></div>
+
+            </div>
+    <input type="submit" class="btn btn-success">
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {% endblock %}

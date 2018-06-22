@@ -252,54 +252,39 @@ class ContentimporterController extends Controller
       {
 
 
-      	    $data = Craft::$app->getRequest()->post('crontime');
-			if (is_null($data) || empty($data))
+      	    $data = (object)Craft::$app->getRequest()->post();
+
+
+			if (empty($data->hour) && empty($data->minute) && empty($data->day) && empty($data->month) && empty($data->week))
 			{
-				Craft::$app->session->setNotice("Empty Text Not allowed !!!");
+
+					Craft::$app->session->setNotice("Empty Text Not allowed !!!");
 			}
-			else
-			{
-				$explopde_crondata= explode('/',$data);
-				if(sizeof($explopde_crondata)<=0)
-				{
-					Craft::$app->session->setNotice("Please input cron data in hh:mm/dd/yy");
-					return $this->renderTemplate('importer/cron');
-				}
-				else
-				{
-					$cron_date = explode(':',$explopde_crondata[0]);
-					$this->hour = isset($cron_date[0]) ? $cron_date[0]:'*';
-					$this->minute = isset($cron_date[1]) ? $cron_date[1]:'*';
-					$this->day = isset($explopde_crondata[1]) ? $explopde_crondata[1]:'*';
-					$this->month = isset($explopde_crondata[2]) ? $explopde_crondata[2]:'*';
-					$this->week = isset($explopde_crondata[3]) ? $explopde_crondata[3]:'*';
-					if($this->hour==='*' && $this->minute==='*' && $this->day==='*' || $this->month==='*' && $this->week==='*')
-					{
-						Craft::$app->session->setNotice("Invalid cron settings !!");
-						return $this->renderTemplate('importer/cron');
-					}
+			else {
 
-				}
+					$this->hour = isset($data->hour) ? $data->hour : '*';
+					$this->minute = isset($data->minute) ? $data->minute : '*';
+					$this->day = isset($data->day) ? $data->day : '*';
+					$this->month = isset($data->month) ? $data->month : '*';
+					$this->week = isset($data->week) ? $data->week : '*';
 
+					try {
+							$crontabRepository = new CrontabRepository(new CrontabAdapter());
+							$crontabJob = new CrontabJob();
+							$crontabJob->minutes = $this->minute;
+							$crontabJob->hours = $this->hour;
+							$crontabJob->dayOfMonth = $this->day;
+							$crontabJob->months = $this->month;
+							$crontabJob->dayOfWeek = $this - $this->week;
+							$crontabJob->taskCommandLine = 'php ../craft importer/cronjob/index';
+							$crontabJob->comments = 'plugin importer '; // Comments are persisted in the crontab
+							$crontabRepository->addJob($crontabJob);
+							$crontabRepository->persist();
+							Craft::$app->session->setNotice("Cron job scheduled");
+				} catch (\Exception $e) {
+					craft::$app->session->setNotice($e->getMessage());
+				}
 			}
-
-		try {
-			$crontabRepository = new CrontabRepository(new CrontabAdapter());
-			$crontabJob = new CrontabJob();
-			$crontabJob->minutes = $this->minute;
-			$crontabJob->hours = $this->hour;
-			$crontabJob->dayOfMonth = $this->day;
-			$crontabJob->months = $this->month;
-			$crontabJob->dayOfWeek = $this-$this->week;
-			$crontabJob->taskCommandLine = 'php ../craft importer/cronjob/index';
-			$crontabJob->comments = 'plugin importer '; // Comments are persisted in the crontab
-			$crontabRepository->addJob($crontabJob);
-			$crontabRepository->persist();
-			Craft::$app->session->setNotice("Cron job scheduled");
-		}catch (\Exception $e)
-		{
-			craft::$app->session->setNotice($e->getMessage());
-		}
 		return $this->renderTemplate('importer/cron');
 
 	}
