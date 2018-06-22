@@ -15,7 +15,10 @@ use fatfish\importer\services;
 use fatfish\importer\services\EntrycategoriesService as Service;
 use fatfish\importer\models\FeedModel;
 use craft\web\Request;
-
+use function Sodium\crypto_aead_aes256gcm_decrypt;
+use TiBeN\CrontabManager\CrontabAdapter;
+use TiBeN\CrontabManager\CrontabJob;
+use TiBeN\CrontabManager\CrontabRepository;
 
 
 /**
@@ -57,6 +60,11 @@ class ContentimporterController extends Controller
     public $apiurl;
     public $fieldlist;
     public $apifield;
+    public $hour;
+    public $minute;
+    public $day;
+    public $month;
+    public $week;
 
     // Public Methods
     // =========================================================================
@@ -238,31 +246,63 @@ class ContentimporterController extends Controller
       }
 
 	/**
-	 * @return Schedule
+	 * cron job settings.
 	 */
 	public function actionSetcron()
       {
 
-          $cronjob1 = new \Cron\Job\ShellJob();
-          $cronjob1->setCommand('/usr/bin/php ../craft importer/cronjob/index');
-//	      $cronjob1->setCommand('/usr/bin/php test.php');
 
-          $cronjob1->setSchedule(new \Cron\Schedule\CrontabSchedule('*/5 * * * *'));
+      	    $data = Craft::$app->getRequest()->post('crontime');
+			if (is_null($data) || empty($data))
+			{
+				Craft::$app->session->setNotice("Empty Text Not allowed !!!");
+			}
+			else
+			{
+				$explopde_crondata= explode('/',$data);
+				if(sizeof($explopde_crondata)<=0)
+				{
+					Craft::$app->session->setNotice("Please input cron data in hh:mm/dd/yy");
+					return $this->renderTemplate('importer/cron');
+				}
+				else
+				{
+					$cron_date = explode(':',$explopde_crondata[0]);
+					$this->hour = isset($cron_date[0]) ? $cron_date[0]:'*';
+					$this->minute = isset($cron_date[1]) ? $cron_date[1]:'*';
+					$this->day = isset($explopde_crondata[1]) ? $explopde_crondata[1]:'*';
+					$this->month = isset($explopde_crondata[2]) ? $explopde_crondata[2]:'*';
+					$this->week = isset($explopde_crondata[3]) ? $explopde_crondata[3]:'*';
+					if($this->hour==='*' && $this->minute==='*' && $this->day==='*' || $this->month==='*' && $this->week==='*')
+					{
+						Craft::$app->session->setNotice("Invalid cron settings !!");
+						return $this->renderTemplate('importer/cron');
+					}
 
-          $resolver1 = new \Cron\Resolver\ArrayResolver();
-          $resolver1->addJob($cronjob1);
+				}
 
+			}
 
-          $cron = new \Cron\Cron();
-          $cron->setExecutor(new \Cron\Executor\Executor());
-          $cron->setResolver($resolver1);
-          echo '<pre>';
-          var_dump($cron->run());
-          echo '</pre>';
+		try {
+			$crontabRepository = new CrontabRepository(new CrontabAdapter());
+			$crontabJob = new CrontabJob();
+			$crontabJob->minutes = $this->minute;
+			$crontabJob->hours = $this->hour;
+			$crontabJob->dayOfMonth = $this->day;
+			$crontabJob->months = $this->month;
+			$crontabJob->dayOfWeek = $this-$this->week;
+			$crontabJob->taskCommandLine = 'php ../craft importer/cronjob/index';
+			$crontabJob->comments = 'plugin importer '; // Comments are persisted in the crontab
+			$crontabRepository->addJob($crontabJob);
+			$crontabRepository->persist();
+			Craft::$app->session->setNotice("Cron job scheduled");
+		}catch (\Exception $e)
+		{
+			craft::$app->session->setNotice($e->getMessage());
+		}
+		return $this->renderTemplate('importer/cron');
 
-
-
-      }
+	}
 
      public function actionFeeds()
      {
@@ -271,11 +311,15 @@ class ContentimporterController extends Controller
        return $this->renderTemplate('importer/feeds',['feeds'=>$feeds]);
      }
 
+
+
      public function actionFeedsettings()
      {
 
          return $this->renderTemplate('importer/feedsettings');
      }
+
+
      public function actionNewfeed()
      {
           $feedmodel = new FeedModel();

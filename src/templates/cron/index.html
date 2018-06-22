@@ -5,9 +5,13 @@
 {% block blockContent %}
 <div class="content">
     <label for="crontime">Select the time to set cron for importing content</label><br>
-<input type="text" id="crontime" name="crontime"/><br>
+    <form method="post" action="setcron">
+        {{csrfInput()}}
+<input type="text" id="crontime" name="crontime" placeholder="hour:month/day/month/week" required/><br>
     <div class="buttons">
-    <button class="btn success">Set Cron</button>
+    <input type="submit" class="btn btn-success">
+
     </div>
+    </form>
 </div>
 {% endblock %}

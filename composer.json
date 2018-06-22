@@ -26,7 +26,9 @@
         "sabre/xml": "2.1.0",
         "cron/cron" : "1.2.4",
         "cakephp/core": "^3.5",
-        "cakephp/utility": "^3.3.12"
+        "cakephp/utility": "^3.3.12",
+      "tiben/crontab-manager": "^1.2"
+
     },
     "autoload": {
         "psr-4": {
