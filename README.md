@@ -11,6 +11,8 @@ This plugin requires Craft CMS 3.0.0-beta.23 or later.
 ## Installation
 
 To install the plugin, follow these instructions.
+
+
 1. Install latest version of curl visit **https://curl.haxx.se/docs/** for details
 2. Open your terminal and go to your Craft project:
 
