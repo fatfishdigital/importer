@@ -2,15 +2,15 @@
 
 {% if noTabs is not defined %}
 {% set tabs = {
-castleford: { label: "CastleFord" | t('importer'), url: url('importer') },
-feeds: { label: "Feeds" | t('importer'), url: url('contentimporter/feeds') },
-cron: { label: "cron" | t('importer'), url: url('contentimporter/cronview') },
-feedsettings: { label: "FeedSettings" | t('importer'), url: url('contentimporter/feedsettings') },
+
+feeds: { label: "Feeds" | t('Importer'), url: url('contentimporter/feeds') },
+cron: { label: "Cron" | t('Importer'), url: url('contentimporter/cronview') },
+feedsettings: { label: "Settings" | t('importer'), url: url('contentimporter/feedsettings') },
 }
 %}
 {% endif %}
 
-{% set title = 'Feed Importer' %}
+{% set title = 'XML Importer' %}
 
 {% set content %}
 {% block blockContent %}

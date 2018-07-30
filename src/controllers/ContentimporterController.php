@@ -113,24 +113,27 @@ class ContentimporterController extends Controller
     public function actionRender()
     {
 
-        $EntryId = (int)Craft::$app->plugins->getPlugin('importer')->getSettings()->entries;
-
-        if($EntryId>0) {
-            $sectionHandle = Craft::$app->sections->getSectionById($EntryId)->handle;
-            $sectionId = Craft::$app->sections->getSectionByHandle($sectionHandle)->getEntryTypes();
-            $this->fieldlist = Craft::$app->fields->getFieldsByLayoutId((int)$sectionId[0]->sectionId);
-            $services = new services\EntrycategoriesService();
-            $this->apifield = $services->fetch_api_field();
-            return $this->renderTemplate('importer/controlpanel', ['fields' => $this->fieldlist, 'apifield' => $this->apifield]);
-
-        }
-        else
-        {
-
-            return $this->renderTemplate('importer/controlpanel',['fields'=>null,'apifield'=>null]);
-
-
-        }
+//        $EntryId = (int)Craft::$app->plugins->getPlugin('importer')->getSettings()->entries;
+//
+//        if($EntryId>0) {
+//            $sectionHandle = Craft::$app->sections->getSectionById($EntryId)->handle;
+//            $sectionId = Craft::$app->sections->getSectionByHandle($sectionHandle)->getEntryTypes();
+//            $this->fieldlist = Craft::$app->fields->getFieldsByLayoutId((int)$sectionId[0]->sectionId);
+//            $services = new services\EntrycategoriesService();
+//            $this->apifield = $services->fetch_api_field();
+//            return $this->renderTemplate('importer/controlpanel', ['fields' => $this->fieldlist, 'apifield' => $this->apifield]);
+//
+//        }
+//        else
+//        {
+//
+//            return $this->renderTemplate('importer/controlpanel',['fields'=>null,'apifield'=>null]);
+//
+//
+//        }
+        $feedcategory = new FeedController(null,null); // dont know why this constructor expects two parameter ,if you see the base controller there is no constructor
+        $feeds = $feedcategory->get_feed_type();
+        return $this->renderTemplate('importer/feeds',['feeds'=>$feeds]);
 
     }
 
@@ -251,10 +254,7 @@ class ContentimporterController extends Controller
 	public function actionSetcron()
       {
 
-
       	    $data = (object)Craft::$app->getRequest()->post();
-
-
 			if (empty($data->hour) && empty($data->minute) && empty($data->day) && empty($data->month) && empty($data->week))
 			{
 
@@ -285,7 +285,7 @@ class ContentimporterController extends Controller
 					craft::$app->session->setNotice($e->getMessage());
 				}
 			}
-		return $this->renderTemplate('importer/cron');
+	return $this->renderTemplate('importer/cron');
 
 	}
 
@@ -300,8 +300,12 @@ class ContentimporterController extends Controller
 
      public function actionFeedsettings()
      {
+         $feedmodel = new FeedModel();
+         $feedService = new services\FeedService();
+         $AllFeedData = $feedService->get_all_feeds();
+//         return $this->renderTemplate('importer/addfeed',['feed'=>$feedmodel,'Feeds'=>$AllFeedData]);
 
-         return $this->renderTemplate('importer/feedsettings');
+         return $this->renderTemplate('importer/feedsettings',['feed'=>$feedmodel,'Feeds'=>$AllFeedData]);
      }
 
 

@@ -1,13 +1,152 @@
-{% extends "importer/_layouts/Feeds.html" %}
+{% extends "importer/_layouts/feeds.html" %}
 {% import "_includes/forms" as forms %}
-{% set selectedTab = 'castlefordFeed' %}
+{% set selectedTab = 'addfeeds' %}
 {% set content %}
 {% block blockContent %}
 
-{% set url =siteUrl %}
+<form method="post" action="{{ siteUrl }}admin/actions/importer/feed/savefeed">
+    {{ csrfInput() }}
+    <input type="hidden" name="action" value="importer/feeds/save-feed">
+
+    {% if feed.id %}<input type="hidden" name="feedId" value="{{ feed.id }}">{% endif %}
+
+    {{ forms.textField({
+    first: true,
+    label: "Name" | t('importer'),
+    instructions: "What this feed will be called in the CP." | t('importer'),
+    id: 'name',
+    name: 'name',
+    value: feed.name,
+    errors: feed.getErrors('name'),
+    autofocus: true,
+    required: true,
+    }) }}
+
+    {{ forms.textField({
+    label: "Feed URL" | t('importer'),
+    instructions: "Can be a file on the local file system or from a website url (http://...)." | t('importer'),
+    id: 'feedUrl',
+    name: 'feedUrl',
+    value: feed.feedurl,
+    errors: feed.getErrors('feedUrl'),
+    required: true,
+    }) }}
+
+    {{ forms.selectField({
+    label: "Feed Type" | t('importer'),
+    instructions: 'Choose what type of feed you\'re retrieving.' | t('importer'),
+    id: 'feedType',
+    name: 'feedType',
+    options: feed.feedtype,
+    value: feed.feedtype,
+    errors: feed.getErrors('feedtype'),
+    required: true,
+    }) }}
 
 
-<a href="{{url}}admin/settings/plugins/importer" class="btn submit">CastleFord</a>
+    {{ forms.selectField({
+    label: "Entry Type" | t('importer'),
+    instructions: 'Choose the Entry Type you want to save your feed data into.' | t('importer'),
+    id: 'entryType',
+    name: 'entryType',
+    options: feed.entryType,
+    value: feed.feedtype,
+    errors: feed.getErrors('feedtype'),
+    required: true,
+    }) }}
 
+    {{ forms.selectField({
+    label: "Primary Element" | t('importer'),
+    instructions: 'Choose the the primary element, it is repeatable element that contains the data you want to import.' | t('importer'),
+    id: 'primary_element',
+    name: 'primary_element',
+    options: feed.primary_element,
+    value: feed.primary_element,
+    errors: feed.getErrors('primary_element'),
+    required: true,
+    }) }}
+
+    <div class="buttons">
+        <input type="submit" class="btn submit" value="{{ 'Save' | t('importer') }}">
+    </div>
+</form>
+<br>
+<br>
+{% if feed.id is null %}
+{% if Feeds is iterable %}
+<h3>Available Feeds</h3>
+<table id="feeds" class="data fullwidth collapsible">
+    <thead>
+    <th scope="col">{{ "Name" | t('Importer') }}</th>
+    <th scope="col">{{ "Type" | t('Importer') }}</th>
+    <th scope="col">{{ "Element Type" | t('Importer') }}</th>
+    <th scope="col">{{ "Process" | t('Importer') }}</th>
+    <th class="thin" colspan="2"></th>
+    </thead>
+    <tbody>
+    {% for allfeed in Feeds %}
+
+    {% if allfeed.id %}
+
+    <tr>
+
+
+        <th scope="row">
+            {{allfeed.name}}
+        </th>
+
+
+        <th scope="row">
+            {{allfeed.feedtype}}
+        </th>
+
+        <th scope="row">
+            {{allfeed.entry_type}}
+        </th>
+        <th scope="row">
+            <a href="{{siteUrl}}/admin/contentimporter/editfeed/{{allfeed.id}}">Edit</a>
+            <a href="{{siteUrl}}/admin/contentimporter/deletefeed/{{allfeed.id}}">Delete</a>
+        </th>
+
+
+
+    </tr>
+
+
+
+
+    {%endif%}
+
+
+
+    {% endfor %}
+    </tbody>
+</table>
+{%endif %}
+{% endif %}
+{% js %}
+
+$('#feedUrl').on('change',function(){
+var dataarray = {};
+dataarray['url']=$(this).val();
+var option = '';
+Craft.postActionRequest(Craft.baseUrl+'/contentimporter/fetchapi',dataarray,function(response){
+
+jQuery.each(response,function(index,value){
+
+option += '<option value='+index+'>'+value+'</option>';
+
+});
+$('#primary_element').html(option);
+});
+
+});
+
+
+
+
+
+{% endjs %}
 {%endblock%}
+
 {% endset %}

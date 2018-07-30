@@ -1,6 +1,6 @@
 {
     "name": "fatfish/importer",
-    "description": "content importer",
+    "description": "XML Importer",
     "type": "craft-plugin",
     "version": "1.0.0",
     "keywords": [
@@ -22,7 +22,6 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.0.0-RC1",
         "sabre/xml": "2.1.0",
         "cron/cron" : "1.2.4",
         "cakephp/core": "^3.5",
@@ -36,8 +35,8 @@
         }
     },
     "extra": {
-        "name": "importer",
-        "handle": "importer",
+        "name": "Importer",
+        "handle": "Importer",
         "hasCpSettings": true,
         "hasCpSection": true,
         "changelogUrl": "https://raw.githubusercontent.com/github.com/fatfish/importer/master/CHANGELOG.md",
