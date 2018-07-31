@@ -2,7 +2,7 @@
 
 XML importer
 
-![Screenshot](resources/img/plugin-logo.png)
+![Screenshot](resources/screenshot/plugin-logo.png)
 
 ## Requirements
 
@@ -26,8 +26,7 @@ To install the plugin, follow these instructions.
 
 
 ## importer Overview
-XML Importer allow user to import xml data from castleford api and other xml api urls. It has two section one for castleford 
-    another for importing XML doc. 
+XML Importer allow user to import xml data from api.
      
 
 ## Configuring importer
@@ -37,7 +36,6 @@ XML Importer allow user to import xml data from castleford api and other xml api
 3. Click on FeedSettings, you will be presented with two more tabs one more CastleFord and another for generic XML.
 4. If you have castleford api enter details otherwise enter your generic xml api details on Feeds tab. And Save 
 5. Click on importer menu once saved. Saved Xml Feeds will appear in respective tab. Castleford xml feeds will appear in Castlford feed.
-
     Generic XML feeds will appear in feeds tab. It wll display field mapping area try to map necessary field as you like then save  the 
     settings and click on run importer to import data from xml feed.
 6. Click on Cron tab if you want to configure cron job to run it as cron job.
@@ -46,7 +44,11 @@ XML Importer allow user to import xml data from castleford api and other xml api
 
 ## Using importer
 
-Here are Some ScreenShots manual 
+![Screenshot](resources/screenshot/screenshot-1.png) 
+
+![Screenshot](resources/screenshot/screenshot-2.png) 
+
+![Screenshot](resources/screenshot/screenshot-3.png)
 
 ## importer Roadmap
 
@@ -55,4 +57,4 @@ More to come on future.
 ##bug
 Please feel free to report bugs or issues you have. For suggestion you can email us on admin@fatfish.com.au
 
-Brought to you by [Fatfish](Fatfish.com.au)
+Brought to you by [Fatfish] **https://fatfish.com.au**
