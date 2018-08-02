@@ -101,7 +101,7 @@ class ContentimporterController extends Controller
         $obj=Craft::$app->plugins->getPlugin('importer')->getSettings();
         $this->apiurl = $obj->apiurl;
         $this->apikey = $obj->apikey;
-        $result = 'Welcome to the ContentimporterController actionDoSomething() method'.$this->apiurl;
+        $result = ''.$this->apiurl;
         return $result;
     }
 
