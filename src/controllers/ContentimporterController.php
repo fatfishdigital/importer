@@ -186,18 +186,13 @@ class ContentimporterController extends Controller
            $service->fetch_xml($feedId); // this will fetch and insert data into database.
            Craft::info('Data Imported Successfully');
            Craft::$app->session->setNotice('Data Imported Successfully!!!');
-
            return $this->actionRender();
        }
        else{
-
            Craft::error('Field Mapping is not Done');
            Craft::$app->session->setNotice('First Save the field mapping properly!!');
-
            return $this->actionRender();
-
-
-       }
+          }
 
       }
       /* Checks whether is request is comming from console or not
@@ -207,7 +202,11 @@ class ContentimporterController extends Controller
        *
        *
        */
-      public function actionRunCron()
+    /**
+     * Runs cron job
+     * at specified time.
+     */
+    public function actionRunCron()
       {
 
 
@@ -223,6 +222,7 @@ class ContentimporterController extends Controller
 
 
       }
+
       public function actionCronview()
       {
          return  $this->renderTemplate('importer/cron');

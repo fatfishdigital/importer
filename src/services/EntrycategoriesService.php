@@ -94,14 +94,16 @@ class EntrycategoriesService extends Component
 
         }
 
-         public function parse_xml($xml)
+         public function parse_xml($xml,$SavedFeed)
          {
 
-             $this->get_fields();
-             $xmlarray = (array)$xml;
-             $fields = [];
 
-             $handleId = (int)\fatfish\importer\Importer::$plugin->getSettings()->entries;
+
+             $this->get_fields($SavedFeed->id);
+             $xmlarray = (array)$xml;
+             $xmlarray=$xmlarray[$SavedFeed->primary_element];
+                  $fields = [];
+             $handleId = (int)$SavedFeed->entry_type;
              $entrytype = new \craft\records\EntryType();
              $entryType = $entrytype->find()->where(['id' => $handleId])->one();
              $entry = new \craft\elements\Entry();
@@ -111,15 +113,16 @@ class EntrycategoriesService extends Component
              foreach ($this->fields as $key => $value) {
                  if (array_key_exists($value, $xmlarray)) {
                      $customfield = strtolower($key);
-                     $fields[strtolower($key)] = $xmlarray[$value];
-                     $entry->$customfield = $xmlarray[$value];
-                     $entry->title = $xmlarray['headline'];
-                         }
+                     $fields[strtolower($key)] = $xmlarray->$value;
+                     $entry->$customfield = $xmlarray->$value;
+                     $entry->title = (string)$xmlarray->$value;
+                     $entry->authorId = Craft::$app->user->id;
+
+             }
              }
 
-               $fields['title'] = $xml->headline;
-               $entry->authorId = Craft::$app->user->id;
-               $entry->fields($fields);
+                $entry->fields($fields);
+
                if (Craft::$app->elements->saveElement($entry)) {
                       return true;
 
@@ -139,23 +142,21 @@ class EntrycategoriesService extends Component
             $Xmlobject= new Service();
             $client = new Client();
 
-            $service=$Xmlobject->parse((string)$this->response);
 
-            foreach ($service as $service) {
-            $endpoint=$service['attributes']['href'];
-            $request = $client->request('GET', $endpoint);
+
+            $request = $client->request('GET', $GetSavedFeed->feedurl);
+
             $response = new \SimpleXMLElement($request->getBody());
-            if($this->get_critearea_content_check($response)) {
-                 $this->parse_xml($response);
-                }
-            }
+            $this->parse_xml($response,$GetSavedFeed);
 
             return true;
         }
 
-        public function get_fields()
+        public function get_fields($id)
         {
-            $ImporterModel = Record::find()->select('entries_field,mapped_field,critearea')->all();
+
+            $ImporterModel = FeedMappingRecord::find()->select('entries_field,mapped_field,critearea')->where(['importer_feeds_id'=>$id])->all();
+
             foreach($ImporterModel as $data)
             {
                $field_handle = Craft::$app->fields->getFieldById($data->entries_field);
