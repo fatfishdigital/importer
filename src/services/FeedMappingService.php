@@ -17,7 +17,16 @@
 
 		public function save_feed_mapping($model)
 		{
-			var_dump($model);
+			$FeedMappingRecord  = new FeedMappingRecord();
+	        $FeedMappingRecord->entries_field = $model->entries_field;
+	        $FeedMappingRecord->mapped_field = $model->mapped_field;
+	        $FeedMappingRecord->critearea    = $model->critearea;
+	        $FeedMappingRecord->feed_type   = $model->feed_type;
+	        $FeedMappingRecord->importer_feeds_id = $model->id;
+
+	        $FeedMappingRecord->save();
+
+			return true;
 
 		}
 

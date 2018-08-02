@@ -8,10 +8,10 @@
 
 namespace fatfish\importer\controllers;
 
+use Craft;
 use craft\web\Controller;
 use fatfish\importer\models\FeedMappingModel;
 use fatfish\importer\models\FeedModel;
-use Craft;
 use fatfish\importer\services\FeedMappingService;
 use fatfish\importer\services\FeedService;
 
@@ -26,6 +26,7 @@ class FeedController extends Controller
     public $id;
     public $entries_field;
     public $xmlkey;
+    public $PrimaryElement;
 
 
 
@@ -42,6 +43,7 @@ class FeedController extends Controller
      */
     public function actionSavefeed()
     {
+
         $FeedModel = new FeedModel();
         $FeedService = new FeedService();
         $this->id = Craft::$app->request->post('feedId');
@@ -49,11 +51,13 @@ class FeedController extends Controller
         $this->feedurl = Craft::$app->request->post('feedUrl');
         $this->feedType = Craft::$app->request->post('feedType');
         $this->entryType = Craft::$app->request->post('entryType');
+        $this->PrimaryElement = Craft::$app->request->post('primary_element');
         $FeedModel->id = (int)$this->id;
         $FeedModel->feedurl = $this->feedurl;
         $FeedModel->name = $this->name;
         $FeedModel->feedtype = $this->feedType;
         $FeedModel->Entrytype = $this->entryType;
+        $FeedModel->primary_element = $this->PrimaryElement;
 
 
         if (is_null($this->id) || empty($this->id)) {
@@ -94,7 +98,7 @@ class FeedController extends Controller
         $FeedModel = new FeedModel();
         $FeedModel = $FeedType;
 
-        foreach ($FeedModel as $feedmodel) {
+              foreach ($FeedModel as $feedmodel) {
 
 
             switch ($feedmodel->feedtype) {
@@ -103,7 +107,9 @@ class FeedController extends Controller
 
                     $xmlParser = new XmlPraser($feedmodel);
                     $listxml = $xmlParser->parse_xml();
+
                     $this->get_feed_fields($feedmodel->entry_type);
+
                     $arrayField[] =
                         [
                             'xml' => $listxml,
@@ -112,7 +118,7 @@ class FeedController extends Controller
                             'type' => $feedmodel->feedtype,
                             'feedid' =>$feedmodel->id,
                         ];
-                    break;
+
 
                 default:
 
@@ -178,7 +184,9 @@ class FeedController extends Controller
 
 				$FeedMapppingService->save_feed_mapping($FeedMappingModel);
 	        }
-
+            $feedcategory = new FeedController(null,null); // dont know why this constructor expects two parameter ,if you see the base controller there is no constructor
+            $feeds = $feedcategory->get_feed_type();
+            return $this->renderTemplate('importer/feeds',['feeds'=>$feeds]);
         }
         public function get_xml_node($url)
         {

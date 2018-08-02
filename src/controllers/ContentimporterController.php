@@ -10,6 +10,7 @@
 
 namespace fatfish\importer\controllers;
 use Craft;
+use craft\services\EntryRevisions;
 use craft\web\Controller;
 use fatfish\importer\services;
 use fatfish\importer\services\EntrycategoriesService as Service;
@@ -101,7 +102,6 @@ class ContentimporterController extends Controller
         $this->apiurl = $obj->apiurl;
         $this->apikey = $obj->apikey;
         $result = 'Welcome to the ContentimporterController actionDoSomething() method'.$this->apiurl;
-//        $this->get_articles($this->apiurl,$this->apikey);
         return $result;
     }
 
@@ -113,24 +113,7 @@ class ContentimporterController extends Controller
     public function actionRender()
     {
 
-//        $EntryId = (int)Craft::$app->plugins->getPlugin('importer')->getSettings()->entries;
-//
-//        if($EntryId>0) {
-//            $sectionHandle = Craft::$app->sections->getSectionById($EntryId)->handle;
-//            $sectionId = Craft::$app->sections->getSectionByHandle($sectionHandle)->getEntryTypes();
-//            $this->fieldlist = Craft::$app->fields->getFieldsByLayoutId((int)$sectionId[0]->sectionId);
-//            $services = new services\EntrycategoriesService();
-//            $this->apifield = $services->fetch_api_field();
-//            return $this->renderTemplate('importer/controlpanel', ['fields' => $this->fieldlist, 'apifield' => $this->apifield]);
-//
-//        }
-//        else
-//        {
-//
-//            return $this->renderTemplate('importer/controlpanel',['fields'=>null,'apifield'=>null]);
-//
-//
-//        }
+
         $feedcategory = new FeedController(null,null); // dont know why this constructor expects two parameter ,if you see the base controller there is no constructor
         $feeds = $feedcategory->get_feed_type();
         return $this->renderTemplate('importer/feeds',['feeds'=>$feeds]);
@@ -151,7 +134,7 @@ class ContentimporterController extends Controller
     $requestedparam = Craft::$app->request->post();
     $entryfield = $requestedparam['entryfield'];
     $mappedfield = $requestedparam['mappedfield'];
-
+    $EntryModel->importer_feeds_id = $requestedparam['feedid'];
      if(isset($requestedparam['radio'])) {
          $critearea_element = $requestedparam['radio'];
      }
@@ -183,7 +166,7 @@ class ContentimporterController extends Controller
      }
 
 
-     public function actionImport()
+     public function actionImport($feedId)
      {
          /*
           * This function imports xml data and saves into database with mapped field
@@ -195,12 +178,12 @@ class ContentimporterController extends Controller
           */
 
 
-
        $service = new Service();
-       if($service->mapped_data_count()) {
+
+       if($service->mapped_data_count($feedId)) {
 
 
-           $service->fetch_xml(); // this will fetch and insert data into database.
+           $service->fetch_xml($feedId); // this will fetch and insert data into database.
            Craft::info('Data Imported Successfully');
            Craft::$app->session->setNotice('Data Imported Successfully!!!');
 

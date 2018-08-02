@@ -8,7 +8,12 @@
 
 namespace fatfish\importer\services;
 use Craft;
+use fatfish\importer\models\ImporterModel;
+use fatfish\importer\records\FeedMappingRecord;
+use fatfish\importer\records\FeedRecord;
+use fatfish\importer\records\ImporterRecord;
 use GuzzleHttp\Client;
+use function GuzzleHttp\Promise\all;
 use yii\base\Component;
 use fatfish\importer\records\ImporterRecord as Record;
 use yii\db\Exception;
@@ -34,27 +39,7 @@ class EntrycategoriesService extends Component
 	 */
 	public function __construct(array $config = [])
             {
-
-                $this->apiurl = Craft::$app->plugins->getPlugin('importer')->getSettings()->apiurl;
-                $this->apikey = Craft::$app->plugins->getPlugin('importer')->getSettings()->apikey;
-                $client = new Client();
-                $this->endpoint = $this->apiurl.'/'.$this->apikey.'/news'; // will construct https://api.castleford.com.au/apikey/news
-	           /*
-	            * Will throw an exception when malformed url is added in url section for castleford.
-	            */
-	            try
-	            {
-		            $request = $client->request('GET',$this->endpoint);
-		            $this->responsebody = new \SimpleXMLElement($request->getBody());
-		            $this->response=$request->getBody();
-	            }
-	            catch(\Exception $guzzle)
-	            {
-	            	return $this->response=null;
-	            }
-
-
-                parent::__construct($config);
+              parent::__construct($config);
             }
 
 
@@ -66,15 +51,20 @@ class EntrycategoriesService extends Component
 	        }
             $newsurl = (string)$this->responsebody->newsListItem['href'];
             $field_array = [];
-            $client = new Client();
-            $request = $client->request('GET',$newsurl);
-            $response = $request->getBody();
+            try {
+                $client = new Client();
+                $request = $client->request('GET', $newsurl);
+                $response = $request->getBody();
 
 
-            $responseBody = (array)new \SimpleXMLElement($response);
-            $field_array=array_keys($responseBody);
-            return $field_array;
-
+                $responseBody = (array)new \SimpleXMLElement($response);
+                $field_array = array_keys($responseBody);
+                return $field_array;
+            }
+            catch (\Exception $exception)
+            {
+                Craft::info('Something Went Wrong'.$exception->getMessage());
+            }
         }
 
     /**
@@ -88,8 +78,7 @@ class EntrycategoriesService extends Component
             $importerRecord->entries_field=$importerModel->entries_field;
             $importerRecord->mapped_field = $importerModel->mapped_field;
             $importerRecord->critearea = $importerModel->critearea;
-
-            $transaction = Craft::$app->getDb()->beginTransaction();
+                        $transaction = Craft::$app->getDb()->beginTransaction();
             try
             {
                 $importerRecord->save(true);
@@ -142,12 +131,16 @@ class EntrycategoriesService extends Component
         }
 
 
-        public function fetch_xml()
+        public function fetch_xml($FeedId)
         {
+
+            $GetSavedFeed = FeedRecord::find()->where(['id'=>$FeedId])->one();
 
             $Xmlobject= new Service();
             $client = new Client();
+
             $service=$Xmlobject->parse((string)$this->response);
+
             foreach ($service as $service) {
             $endpoint=$service['attributes']['href'];
             $request = $client->request('GET', $endpoint);
@@ -188,7 +181,7 @@ class EntrycategoriesService extends Component
                      return true;
                   }
         }
-        public function mapped_data_count()
+        public function mapped_data_count($id)
         {
             /*
              * return boolean
@@ -196,7 +189,7 @@ class EntrycategoriesService extends Component
              * if field mapping is not done returns false
              */
 
-            $RecordCount = Record::find()->count('*');
+            $RecordCount = FeedMappingRecord::find()->where(['importer_feeds_id'=>$id])->count('*');
             if($RecordCount<=0)
             {
                 return false;

@@ -24,6 +24,7 @@ class FeedService extends Component
         $FeedRecord->feedurl = $FeedModel->feedurl;
         $FeedRecord->feedtype = $FeedModel->feedtype;
         $FeedRecord->entry_type = $FeedModel->Entrytype;
+        $FeedRecord->primary_element = $FeedModel->primary_element;
 
         $transaction = Craft::$app->db->beginTransaction();
         try
@@ -54,6 +55,7 @@ class FeedService extends Component
         $FeedRecord->feedurl = $FeedModel->feedurl;
         $FeedRecord->feedtype = $FeedModel->feedtype;
         $FeedRecord->entry_type = $FeedModel->Entrytype;
+        $FeedRecord->primary_element = $FeedModel->primary_element;
         $FeedModel->dateUpdated = date('Y-m-d h:i:s');
         $transaction = Craft::$app->db->beginTransaction();
         try

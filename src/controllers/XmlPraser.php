@@ -18,47 +18,32 @@ class XmlPraser
     public $feedurl;
     public $xml=[];
     public $response;
+    public $PrimaryElement;
     public function __construct($FeedModel)
     {
 
-        $this->feedurl = $FeedModel->feedurl;
-        $client = new Client();
+
+        $this->feedurl = (string)$FeedModel->feedurl;
+          $client = new Client();
         $request = $client->request('GET',$this->feedurl);
          $this->response  = $request->getBody();
+        $this->PrimaryElement =(string) $FeedModel->primary_element;
+
+
 
 
     }
     public function parse_xml()
     {
 
-
     	$xml = new \SimpleXMLElement($this->response);
 	    $proper_xml_form = $xml->asXML();
-	    $xmlIterator = new \SimpleXMLIterator($proper_xml_form);
-	       foreach($xmlIterator->children() as $child)
-	     {
-
-			if($child->children())
-			{
-
-				foreach ($child->children() as $secondchild)
-				{
-
-					return (array_keys((array)$secondchild));
-					break;
-				}
-
-			}
-			else
-			{
-
-
-				return array_keys((array)$child);
-			}
-
-	    }
-
-
+	    $xmlIterator = (array)new \SimpleXMLIterator($proper_xml_form);
+	                foreach($xmlIterator[$this->PrimaryElement] as $key=>$value)
+        	        {
+                            array_push($this->xml,$key);
+	                    }
+	    return $this->xml;
     }
     public function get_primary_node_element()
     {

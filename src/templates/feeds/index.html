@@ -15,7 +15,7 @@
 
         {% for feed in feeds %}
         <h2>{{ feed['name'] }}</h2>
-        <form method="post" action="{{ siteUrl }}admin/actions/importer/feed/savefeedmapping">
+        <form method="post" action="{{ siteUrl }}admin/actions/importer/feed/savefeedmapping" name="feedrunner">
             {{ csrfInput() }}
             <input type="hidden" name="feedid" id="feedid" value="{{feed['feedid']}}" />
             <input type="hidden" name="type" id="type" value="{{feed['type']}}" />
@@ -56,7 +56,7 @@
             </table>
             <div class="buttons">
                 <input class="btn submit" type="submit" value="{{ "Save Configuration"|t('importer') }}"/>
-                <a href="{{ siteUrl }}admin/actions/importer/contentimporter/import" class="btn submit" id="runImport">{{ "Run Importer"|t('importer') }}</a>
+                <a href="{{ siteUrl }}admin/contentimporter/import/{{feed['feedid']}}" class="btn submit" id="runImport">{{ "Run Importer"|t('importer') }}</a>
             </div>
         </form>
         <br><br>

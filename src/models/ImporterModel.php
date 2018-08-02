@@ -47,6 +47,7 @@ class ImporterModel extends Model
     public $dateCreated;
     public $dateUpdated;
     public $uid;
+    public $importer_feeds_id;
 
 
     // Public Methods
@@ -75,7 +76,8 @@ class ImporterModel extends Model
             ['critearea', 'integer`'],
             ['dateCreated', 'datetime'],
             ['dateUpdated','datetime'],
-            ['uid','integer']
+            ['uid','integer'],
+            ['importer_feeds_id','integer']
         ];
     }
 

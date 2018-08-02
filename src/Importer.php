@@ -60,7 +60,7 @@ class Importer extends Plugin
      *
      * @var string
      */
-    public $schemaVersion = '1.0.13';
+    public $schemaVersion = '1.0.14';
 
     // Public Methods
     // =========================================================================
@@ -130,6 +130,7 @@ class Importer extends Plugin
 	        $event->rules['contentimporter/fetchapi'] = 'importer/contentimporter/fetchapi';
 	        $event->rules['index.php?p=admin/actions/contentimporter/fetchapi'] = 'importer/contentimporter/fetchapi';
 	        $event->rules['contentimporter/setcron'] = 'importer/contentimporter/setcron';
+	        $event->rules['contentimporter/import/<feedId:\d+>'] = 'importer/contentimporter/import';
         });
         Event::on(UrlManager::class,UrlManager::EVENT_REGISTER_CP_URL_RULES,function (RegisterUrlRulesEvent $event){
 

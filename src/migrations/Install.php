@@ -44,17 +44,18 @@
 
         public function createTables()
             {
-                $this->createTable(
-                '{{%importer_field_mapping}}',
-                [
-                    'id' => $this->primaryKey(),
-                    'entries_field' => $this->integer(),
-                    'mapped_field' => $this->string(45),
-                    'critearea' => $this->integer(),
-                    'uid' => $this->uid(),
-                    'dateCreated' => $this->dateTime(),
-                    'dateUpdated' => $this->dateTime(),
-                ]);
+//                $this->createTable(
+//                '{{%importer_field_mapping}}',
+//                [
+//                    'id' => $this->primaryKey(),
+//                    'entries_field' => $this->integer(),
+//                    'mapped_field' => $this->string(45),
+//                    'critearea' => $this->integer(),
+//                    'uid' => $this->uid(),
+//                    'importer_feeds_id'=>$this->integer(),
+//                    'dateCreated' => $this->dateTime(),
+//                    'dateUpdated' => $this->dateTime(),
+//                ]);
             }
 
         public function createFeedTables()
@@ -88,6 +89,7 @@
                     'mapped_field' => $this->string(45),
                     'critearea' => $this->integer(),
                     'feed_type' => $this->string(),
+                    'importer_feeds_id'=>$this->integer(),
                     'uid' => $this->uid(),
                     'dateCreated' => $this->dateTime(),
                     'dateUpdated' => $this->dateTime(),
