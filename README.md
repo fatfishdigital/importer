@@ -2,7 +2,7 @@
 
 XML importer
 
-![Screenshot](resources/screenshot/plugin-logo.png)
+![Screenshot](resources/img/plugin-logo.png)
 
 ## Requirements
 
